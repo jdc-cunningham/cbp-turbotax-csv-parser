@@ -1,7 +1,13 @@
 04/06
 Alright today is the day, really need to get this done/move on.
 
+2:46 PM
+Slow progress had to backtrack from what I had designed, went another direction.
 
+3:03 PM
+I'm failing, feel tired
+
+Lucky for me the balances all start at 0 in 2021 since I wasn't using CBP till then.
 
 04/05
 I'm going to go build the client-based visual version.

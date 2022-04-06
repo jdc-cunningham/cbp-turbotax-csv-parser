@@ -61,3 +61,108 @@ button#start {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.flex-grow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow-y: auto;
+  height: calc(100vh - 100px);
+  width: 80vw;
+}
+
+.transaction {
+  width: 100%;
+}
+
+.transaction__currency {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.transaction__header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  width: 100%;
+  font-weight: bold;
+}
+
+.transaction__header span {
+  font-style: normal;
+}
+
+.transaction__header span.date {
+  width: 15%;
+}
+
+.transaction__header span {
+  width: calc(85% * 0.15);
+}
+
+.transaction__date-set {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  width: 100%;
+}
+
+.transaction__date-set:not(:first-of-type) {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.transaction__date {
+  width: 15%;
+  align-items: flex-start;
+}
+
+.transaction__date-set-rows {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 85%;
+}
+
+.transaction__date-set-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  font-size: 16px;
+}
+
+.transaction__date-set-row span {
+  text-align: left;
+  font-style: normal;
+}
+
+.transaction__date-set-row span.side {
+  width: 15%;
+}
+
+.transaction__date-set-row span.amount {
+  width: 15%;
+}
+
+.transaction__date-set-row span.cost {
+  width: 70%;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
