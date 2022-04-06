@@ -1,3 +1,8 @@
+04/06
+Alright today is the day, really need to get this done/move on.
+
+
+
 04/05
 I'm going to go build the client-based visual version.
 
@@ -12,4 +17,3 @@ I made hte original repo private as I accidentally uploaded my CSV file, it's no
 Also I decided to change how I'm going to do it. Have a new plan.
 
 Food break
-
