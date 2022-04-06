@@ -10,7 +10,14 @@ I'll check on CBP how it handles subtraction with regard to decimal places.
 
 It's really windy today and the power keeps periodically flickering turning off disabilng my internet temporarily ha.
 
+2:25 PM
+Man... progress is slow, I screwed up my sleep pattern again
 
+<img src="./no-like.png" width="800"/>
+
+I have not bothered with importing say Roboto for font styling yet, will come later.
+
+I just need to get the main stuff down/get this damn tax return filed.
 
 04/05
 I'm going to go build the client-based visual version.
