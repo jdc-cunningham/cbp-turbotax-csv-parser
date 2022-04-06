@@ -61,3 +61,45 @@ button#start {
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+.flex-grow {
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 80vw;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.bsdg {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.bsdg__side {
+  display: flex;
+  align-items: flex-start;
+  justify-content: stretch;
+  flex-direction: row;
+  width: 100%;
+}
+
+.bsdg__side-left {
+  width: 15%;
+}
+
+.bsdg__side-right {
+  width: 85%;
+}
+
+.bsdg__side-right-group {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.bsdg__side-right-group:not(:last-of-type) {
+  border-bottom: 1px solid #282828;
+}

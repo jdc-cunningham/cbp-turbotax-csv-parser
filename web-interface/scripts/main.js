@@ -72,11 +72,43 @@ const groupByDate = (sortedFills) => {
   return newObj;
 }
 
-const renderBuySellRows = () => {
+const renderBuySellRows = (buySellDateGroups) => {
+  console.log(buySellDateGroups);
+  step3.innerHTML = '';
+  step3.classList = 'flex-grow';
+
+  Object.keys(buySellDateGroups).forEach(currency => {
+    step3.innerHTML +=
+      `<div class="bsdg">
+        <h2>${currency}</h2>
+        ${Object.keys(buySellDateGroups[currency]).map(side => (
+          `<div class="bsdg__side">
+            <div class="bsdg__side-left">${side}</div>
+            <div class="bsdg__side-right">
+              ${Object.keys(buySellDateGroups[currency][side]).map(fillDate => (
+                `<div class="bsdg__side-right-group">
+                  ${buySellDateGroups[currency][side][fillDate].map(tx => (
+                    `<div class="bsdg__side-right-group-individual">
+                      ${fillDate}
+                      ${tx[0]}
+                      ${tx[1]}
+                    </div>`
+                  )).join("")}
+                </div>`
+              )).join("")}
+            </div>
+          </div>
+          `
+        )).join("")}
+      </div>`;
+  });
+}
+
+const processBuySellRows = () => {
   const buySellGroups = sortBuySellRowsByDate(csvRows);
   const buySellDateGroups = groupByDate(buySellGroups);
-  console.log(buySellDateGroups);
+  renderBuySellRows(buySellDateGroups);
 }
 
 // for development only
-renderBuySellRows();
+processBuySellRows();

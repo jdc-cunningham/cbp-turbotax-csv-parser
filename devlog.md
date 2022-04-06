@@ -1,6 +1,15 @@
 04/06
 Alright today is the day, really need to get this done/move on.
 
+1:23 PM
+Getting distracted, need to wrap this up today
+
+I decided to not try to round anything until needed. I had this thought that you could manually round where you think it should to get it to 0 by the UI.
+
+I'll check on CBP how it handles subtraction with regard to decimal places.
+
+It's really windy today and the power keeps periodically flickering turning off disabilng my internet temporarily ha.
+
 
 
 04/05
