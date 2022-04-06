@@ -156,7 +156,15 @@ button#start {
 }
 
 .transaction__date-set-row span.cost {
-  width: 70%;
+  width: 15%;
+}
+
+.transaction__date-set-row span.balance {
+  width: 15%;
+}
+
+.transaction__date-set-row span.gain {
+  width: 40%;
 }
 
 .red {

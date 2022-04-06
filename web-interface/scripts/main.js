@@ -45,8 +45,12 @@ const renderBuySellRows = (sortedBuySellRows) => {
   step3.innerHTML = "";
   step3.classList = "flex-grow";
 
-  step3.innerHTML = Object.keys(sortedBuySellRows).map(currency => (
-    `<div class="transaction">
+  const currencyBalance = {};
+
+  step3.innerHTML = Object.keys(sortedBuySellRows).map(currency => {
+    currencyBalance[currency] = 0;
+
+    return `<div class="transaction">
       <div class="transaction__currency">${currency}</div>
       <div class="transaction__header">
         <span class="date">DATE</span>
@@ -54,6 +58,7 @@ const renderBuySellRows = (sortedBuySellRows) => {
         <span class="size">SIZE</span>
         <span class="cost">COST</span>
         <span class="wallet">BALANCE</span>
+        <span class="gain">GAIN</span>
       </div>
       ${Object.keys(sortedBuySellRows[currency]).map(txDate => (
         `<div class="transaction__date-set">
@@ -61,18 +66,22 @@ const renderBuySellRows = (sortedBuySellRows) => {
             ${txDate}
           </div>
           <div class="transaction__date-set-rows">
-            ${sortedBuySellRows[currency][txDate].map(txRow => (
-              `<div class="transaction__date-set-row">
+            ${sortedBuySellRows[currency][txDate].map(txRow => {
+              currencyBalance[currency] += parseFloat((txRow[3] === 'SELL') ? (-1 * txRow[5]) : txRow[5]);
+ 
+              return `<div class="transaction__date-set-row">
                 <span class="side ${txRow[3] === 'SELL' ? 'red' : 'green'}">${txRow[3]}</span>
                 <span class="amount">${txRow[5]}</span>
                 <span class="cost">${txRow[9]}</span>
+                <span class="balance">${roundSize(currencyBalance[currency])}</span>
+                <span class="gain">${txRow[3] === 'SELL' ? 0 : ''}</span>
               </div>`
-            )).join("")}
+            }).join("")}
           </div>
         </div>`
       )).join("")}
     </div>`
-  )).join("");
+  }).join("");
 }
 
 const processBuySellRows = () => {
