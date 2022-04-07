@@ -1,3 +1,13 @@
+04/07
+Okay maybe today is the day
+
+11:36 AM
+Distracted, paying bills
+
+Back to it
+
+
+
 04/06
 Alright today is the day, really need to get this done/move on.
 
