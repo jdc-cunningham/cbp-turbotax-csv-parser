@@ -1,3 +1,53 @@
+04/07
+
+11:58 AM
+Yuck... mixing logic and rendering together
+
+Try it again
+
+12:06 PM
+Break
+
+12:39 PM
+Uebok gotta file these taxes
+
+12:59 PM
+Distracted, this is like those times back in the day I would be trying to do my physics homework and my brain would just not comply. Nope, sleep time.
+
+The hard part about this is the looping/recursion and the decimal rounding. On CBP's side, things just magically equate... you expect 0.000001 left over from a sale but it's treated as 0 like wtf...
+
+So what I'm working on has to have manual intervention where you check the balances in CBP activity and they match
+
+It sucks
+
+1:48 PM
+FOCUS!!! You lazy pos lmao
+
+I feel like I keep going in circles
+
+I've written this process like 3-5x now I just keep changing directions, initially it was node based but then I moved it to client side/in browser only (no upload).
+
+I think I've simplified it even more conceptually. You have your buy and sell groups sorted by currency > date.
+
+Then as you process the sells, you have this pool that you have to match in size/cost basis based on the currency price at that time.
+
+Then you keep the remainder in the buy set.
+
+2:31 PM
+back at it
+
+2:47 PM
+You are failing doctor
+
+4:32 PM
+Might be getting somewhere, numbers are making sense just slightly off
+
+6:08 PM
+Ooh... that was bad... I was going in a panic, checking the math on the side in excel sheet, I missed a digit in excel
+so I thought my code was bad
+
+
+
 04/06
 Alright today is the day, really need to get this done/move on.
 
