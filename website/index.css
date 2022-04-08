@@ -5,10 +5,13 @@ body {
   flex-direction: column;
   width: 100vw;
   height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 body * {
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 div {
@@ -44,8 +47,20 @@ p {
   margin-bottom: 0.25rem;
 }
 
+b {
+  font-weight: bold;
+}
+
 span {
   font-style: italic;
+}
+
+.margin-top {
+  margin-top: 16px;
+}
+
+.margin-bottom {
+  margin-bottom: 16px;
 }
 
 img.example-image {

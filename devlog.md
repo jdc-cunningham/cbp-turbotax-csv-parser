@@ -31,6 +31,11 @@ Math looks correct, it's a little off with regard to say 0.048559 vs. 0.048558 a
 
 Well there's no failing non-ending loop so that's a good sign
 
+6:24 PM
+So at this point I'm going to pretty this thing up, do the full flow as a user.
+
+I've been working with hardcoded data for the time being/not doing the upload.
+
 
 
 04/07

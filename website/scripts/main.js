@@ -1,8 +1,8 @@
 // assumptions:
 // anytime an operation is done that can change decimal places, round
 
-// let csvRows = [];
-let activeStep = 3;
+let csvRows = [];
+let activeStep = 1;
 const sortedFills = {};
 const groupedBuySellRows = {};
 const currencyGains = {};
