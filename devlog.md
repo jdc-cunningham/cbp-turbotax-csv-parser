@@ -1,3 +1,11 @@
+04/07
+7:40 PM
+OMG... I don't like what I made
+
+Why is this so hard?
+
+Ugh.. I can't start over, what I had is close it just needs tweaks
+
 04/06
 Alright today is the day, really need to get this done/move on.
 
