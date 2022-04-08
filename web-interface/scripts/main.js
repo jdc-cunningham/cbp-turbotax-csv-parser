@@ -116,19 +116,23 @@ const getTotalCost = (arrayOfSizes) => (
 // adding buy sizes with proportional fractional cost-basis
 // limited by size and date
 // this also reduces the reference whether by whole rows or partial
-const getSellMatch = (currency, saleSize) => {
+const getSellMatch = (currency, saleSize, saleDate) => {
   const sellMatch = [];
+  let loopCounter = 0; // set max
 
   const addBuy = () => {
-    console.log(currency, saleSize, groupedBuySellRows[currency].buy[0]);
-    if (!sellMatch.length || getTotalSize(sellMatch) < saleSize) {
-      
-      if (!groupedBuySellRows[currency].buy[0]) {
-        console.log('failed', currency, saleSize, sellMatch);
-        return sellMatch;
-      }
-      
-      const oldestBuy = groupedBuySellRows[currency].buy[0];
+    loopCounter += 1;
+
+    if (loopCounter > 25) {
+      console.log('fail', currency, saleDate);
+      return;
+    }
+
+    const firstBuyRow = groupedBuySellRows[currency].buy[0];
+    const firstBuyRowDate = firstBuyRow?.split(',')[4].split('T')[0];
+
+    if ((firstBuyRow && saleDate >= firstBuyRowDate) && (!sellMatch.length || getTotalSize(sellMatch) < saleSize)) {
+      const oldestBuy = firstBuyRow;
       const oldestBuyInfo = oldestBuy.split(',');
       const oldestBuySize = roundSize(oldestBuyInfo[5]);
       const oldestBuyCost = roundCost(oldestBuyInfo[9]);
@@ -173,15 +177,19 @@ const getTotalCostBasis = (addedBuys) => {
   return [totalSize, totalCost];
 }
 
+const sumGains = (dateGainObj) => {
+  return Object.keys(dateGainObj).map(date => dateGainObj[date]).reduce((a, b) => a+b)
+}
+
 const processTransactions = () => {
   Object.keys(groupedBuySellRows).forEach(currency => {
-    if (currency === "ETH") {
+    // if (currency === "ETH") {
       groupedBuySellRows[currency].sell.forEach(saleTx => {
         const saleTxInfo = saleTx.split(',');
         const saleDate = saleTxInfo[4].split('T')[0];
         const saleSize = roundSize(saleTxInfo[5]);
         const saleCost = roundCost(saleTxInfo[9]);
-        const sellMatch = getSellMatch(currency, saleSize);
+        const sellMatch = getSellMatch(currency, saleSize, saleDate);
         const buyBasis = getTotalCostBasis(sellMatch);
 
         if (!(saleDate in currencyGains[currency])) {
@@ -190,14 +198,38 @@ const processTransactions = () => {
 
         currencyGains[currency][saleDate] += (roundSize(saleCost + buyBasis[1]));
       });
-    }
+    // }
   });
+
+  console.log(sumGains(currencyGains['ADA']));
+  console.log(sumGains(currencyGains['ETH']));
+  console.log(sumGains(currencyGains['BTC']));
+}
+
+// data is array of arrays: Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds
+// https://stackoverflow.com/a/14966131/2710227
+const generateCsv = (data) => {
+  let csvContent = "data:text/csv;charset=utf-8,";
+
+  const sampleData = [
+    ['Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds'],
+    ['ETH', '2021-02-4', '343', '2022-04-24', '343']
+  ];
+
+  sampleData.forEach(csvRow => {
+    let row = csvRow.join(",");
+    csvContent += row + "\r\n";
+  });
+
+  var encodedUri = encodeURI(csvContent);
+  window.open(encodedUri);
 }
 
 const processBuySellRows = () => {
   const sortedBuySellRows = sortBuySellRowsCombineDate(csvRows);
   processTransactions();
   renderBuySellRows(sortedBuySellRows);
+  // generateCsv();
   // renderBuySellRows(sortedBuySellRows);
 }
 

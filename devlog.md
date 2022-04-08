@@ -46,7 +46,23 @@ Might be getting somewhere, numbers are making sense just slightly off
 Ooh... that was bad... I was going in a panic, checking the math on the side in excel sheet, I missed a digit in excel
 so I thought my code was bad
 
+6:43 PM
+Ugh... this sucks infinite loop
+I just noticed too the fills CSV I have doesn't match their portfolio activity eg. if there are 7 dates in the spreadsheet, I only see 5 in CBP... so idk.
 
+For example I can't get these two to equal each other `0.001024 1e-8` I think that's `0.001024 0.00000008`
+
+Good news is only BTC is the one that has problems.
+
+I still have to manually verify this before considering it good enough for public use. I just have to move on.
+
+There are over 1300 rows I have to validate oof.
+
+A visual subtracting bar guide would be helpful. Then you can look at it visually to see if something doesn't make sense.
+
+Well according to this and my other FIFO calculators I did have net gains in 2021 so that's cool except I gotta pay more taxes ha.
+
+So I'll manually verify this CSV then damn.
 
 04/06
 Alright today is the day, really need to get this done/move on.
