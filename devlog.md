@@ -1,3 +1,38 @@
+04/08
+
+Late start today will have to reset my sleep pattern again
+
+3:46 PM
+
+4:01 PM
+Today is when it gets done
+
+4:58 PM
+Screwing around, suns out confirming something
+
+5:00 PM
+Alright let's go, I'm going to manually validate the ETH transactions and see if they match my script in `main.js` so far
+
+Yeap... that's not correct
+
+<img src="./logic.png" width="800"/>
+
+So above you can see how I prove what was gained or lost using FIFO method.
+
+Problem is the `main.js` script output doesn't match that, so gotta step through it
+
+Nice looks to be a simple one liner change, will continue verifying
+
+5:31 PM
+Yeah next one to verify is a multi-sale in same date, since it's totalled together for the display
+
+5:51 PM
+Math looks correct, it's a little off with regard to say 0.048559 vs. 0.048558 and `$53.532473` vs. `$53.53082564`
+
+Well there's no failing non-ending loop so that's a good sign
+
+
+
 04/07
 
 11:58 AM
@@ -63,6 +98,8 @@ A visual subtracting bar guide would be helpful. Then you can look at it visuall
 Well according to this and my other FIFO calculators I did have net gains in 2021 so that's cool except I gotta pay more taxes ha.
 
 So I'll manually verify this CSV then damn.
+
+I can get help by generating what I see on the screen as a CSV to work with in Google Spreadsheet.
 
 04/06
 Alright today is the day, really need to get this done/move on.

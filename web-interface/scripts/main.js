@@ -22,6 +22,20 @@ const absVal = val => val < 0 ? -1 * val : val;
 const roundSize = (val, len = 0) => typeof val === 'number' ? parseFloat(val.toFixed(len || 8)) : parseFloat(parseFloat(val).toFixed(len || 8));
 const roundCost = val => typeof val === 'number' ? parseFloat(val.toFixed(6)) : parseFloat(parseFloat(val).toFixed(6));
 
+// data is array of arrays: Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds
+// https://stackoverflow.com/a/14966131/2710227
+const generateCsv = (data) => {
+  let csvContent = "data:text/csv;charset=utf-8,";
+
+  data.forEach(csvRow => {
+    let row = csvRow.join(",");
+    csvContent += row + "\r\n";
+  });
+
+  var encodedUri = encodeURI(csvContent);
+  window.open(encodedUri);
+}
+
 const sortBuySellRowsCombineDate = (csvRows) => {
   csvRows.forEach(csvRow => {
     const csvRowCols = csvRow.split(',');
@@ -80,7 +94,7 @@ const renderBuySellRows = (sortedBuySellRows) => {
             ${sortedBuySellRows[currency][txDate].map(txRow => {
               let sellGains = '';
 
-              if (!(txDate in renderedSaleDates)) {
+              if (txRow[3] === 'SELL' && !(txDate in renderedSaleDates)) {
                 renderedSaleDates[txDate] = true;
                 sellGains = `T ${roundCost(currencyGains[currency][txDate])}`;
               }
@@ -93,7 +107,7 @@ const renderBuySellRows = (sortedBuySellRows) => {
                 <span class="cost">${txRow[9]}</span>
                 <span class="balance">${roundSize(currencyBalance[currency])}</span>
                 <span class="gain">
-                  ${(txRow[3] === 'SELL' && currency in currencyGains) ? sellGains : ''}
+                  ${(txRow[3] === 'SELL') ? sellGains : ''}
                 </span>
               </div>`
             }).join("")}
@@ -123,8 +137,9 @@ const getSellMatch = (currency, saleSize, saleDate) => {
   const addBuy = () => {
     loopCounter += 1;
 
-    if (loopCounter > 25) {
-      console.log('fail', currency, saleDate);
+    if (loopCounter > 100) { // looping isn't a bad thing as long as it ends
+      console.log('fail', currency, saleDate, saleSize);
+      console.log(sellMatch);
       return;
     }
 
@@ -142,7 +157,8 @@ const getSellMatch = (currency, saleSize, saleDate) => {
         sellMatch.push([oldestBuySize, oldestBuyCost]);
         groupedBuySellRows[currency].buy.shift();
       } else {
-        const fillerSize = saleSize;
+        console.log('>', sellMatch);
+        const fillerSize = saleSize - getTotalSize(sellMatch);
         const fillerCost = roundCost(fillerSize * (oldestBuyCost / oldestBuySize));
 
         // reduce original
@@ -178,19 +194,22 @@ const getTotalCostBasis = (addedBuys) => {
 }
 
 const sumGains = (dateGainObj) => {
-  return Object.keys(dateGainObj).map(date => dateGainObj[date]).reduce((a, b) => a+b)
+  return Object.keys(dateGainObj).length ? Object.keys(dateGainObj).map(date => dateGainObj[date]).reduce((a, b) => a+b) : 0
 }
 
 const processTransactions = () => {
+  let saleCounter = 0;
   Object.keys(groupedBuySellRows).forEach(currency => {
     // if (currency === "ETH") {
       groupedBuySellRows[currency].sell.forEach(saleTx => {
+        saleCounter += 1;
         const saleTxInfo = saleTx.split(',');
         const saleDate = saleTxInfo[4].split('T')[0];
         const saleSize = roundSize(saleTxInfo[5]);
         const saleCost = roundCost(saleTxInfo[9]);
         const sellMatch = getSellMatch(currency, saleSize, saleDate);
         const buyBasis = getTotalCostBasis(sellMatch);
+        console.log(currency, 'match', saleDate, saleSize, buyBasis);
 
         if (!(saleDate in currencyGains[currency])) {
           currencyGains[currency][saleDate] = 0;
@@ -201,28 +220,13 @@ const processTransactions = () => {
     // }
   });
 
+  console.log('sales', saleCounter);
+
+  console.log(currencyGains);
+
   console.log(sumGains(currencyGains['ADA']));
   console.log(sumGains(currencyGains['ETH']));
   console.log(sumGains(currencyGains['BTC']));
-}
-
-// data is array of arrays: Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds
-// https://stackoverflow.com/a/14966131/2710227
-const generateCsv = (data) => {
-  let csvContent = "data:text/csv;charset=utf-8,";
-
-  const sampleData = [
-    ['Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds'],
-    ['ETH', '2021-02-4', '343', '2022-04-24', '343']
-  ];
-
-  sampleData.forEach(csvRow => {
-    let row = csvRow.join(",");
-    csvContent += row + "\r\n";
-  });
-
-  var encodedUri = encodeURI(csvContent);
-  window.open(encodedUri);
 }
 
 const processBuySellRows = () => {
