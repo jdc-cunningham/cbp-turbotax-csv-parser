@@ -138,7 +138,7 @@ const getSellMatch = (currency, saleSize, saleDate) => {
     loopCounter += 1;
 
     if (loopCounter > 100) { // looping isn't a bad thing as long as it ends
-      console.log('fail', currency, saleDate, saleSize);
+      console.log('non-ending loop fail', currency, saleDate, saleSize);
       console.log(sellMatch);
       return;
     }
@@ -157,7 +157,6 @@ const getSellMatch = (currency, saleSize, saleDate) => {
         sellMatch.push([oldestBuySize, oldestBuyCost]);
         groupedBuySellRows[currency].buy.shift();
       } else {
-        console.log('>', sellMatch);
         const fillerSize = saleSize - getTotalSize(sellMatch);
         const fillerCost = roundCost(fillerSize * (oldestBuyCost / oldestBuySize));
 
@@ -200,24 +199,21 @@ const sumGains = (dateGainObj) => {
 const processTransactions = () => {
   let saleCounter = 0;
   Object.keys(groupedBuySellRows).forEach(currency => {
-    // if (currency === "ETH") {
-      groupedBuySellRows[currency].sell.forEach(saleTx => {
-        saleCounter += 1;
-        const saleTxInfo = saleTx.split(',');
-        const saleDate = saleTxInfo[4].split('T')[0];
-        const saleSize = roundSize(saleTxInfo[5]);
-        const saleCost = roundCost(saleTxInfo[9]);
-        const sellMatch = getSellMatch(currency, saleSize, saleDate);
-        const buyBasis = getTotalCostBasis(sellMatch);
-        console.log(currency, 'match', saleDate, saleSize, buyBasis);
+    groupedBuySellRows[currency].sell.forEach(saleTx => {
+      saleCounter += 1;
+      const saleTxInfo = saleTx.split(',');
+      const saleDate = saleTxInfo[4].split('T')[0];
+      const saleSize = roundSize(saleTxInfo[5]);
+      const saleCost = roundCost(saleTxInfo[9]);
+      const sellMatch = getSellMatch(currency, saleSize, saleDate);
+      const buyBasis = getTotalCostBasis(sellMatch);
 
-        if (!(saleDate in currencyGains[currency])) {
-          currencyGains[currency][saleDate] = 0;
-        }
+      if (!(saleDate in currencyGains[currency])) {
+        currencyGains[currency][saleDate] = 0;
+      }
 
-        currencyGains[currency][saleDate] += (roundSize(saleCost + buyBasis[1]));
-      });
-    // }
+      currencyGains[currency][saleDate] += (roundSize(saleCost + buyBasis[1]));
+    });
   });
 
   console.log('sales', saleCounter);
