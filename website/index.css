@@ -25,6 +25,15 @@ div#step-1 {
   align-items: flex-start;
 }
 
+div#step-2 {
+  margin-top: 0.5rem;
+}
+
+div#step-2 span {
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
 h1 {
   font-size: 2rem;
   font-weight: bold;
@@ -87,8 +96,22 @@ button#start {
   width: 80vw;
 }
 
+.step-3__nav {
+  height: 68px;
+}
+
 .transaction {
   width: 100%;
+}
+
+#generate-csv-btn {
+  background-color: #808080;
+  color: white;
+  border: 0;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 1.125rem;
 }
 
 .transaction__currency {

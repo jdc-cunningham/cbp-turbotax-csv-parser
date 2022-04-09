@@ -3,19 +3,39 @@
 
 let csvRows = [];
 let activeStep = 1;
+let saleCounter = 0;
+
 const sortedFills = {};
 const groupedBuySellRows = {};
 const currencyGains = {};
+const csvData = {};
 
 const startBtn = document.getElementById('start');
 const step1 = document.getElementById('step-1');
 const step2 = document.getElementById('step-2');
 const step3 = document.getElementById('step-3');
+const step3Disp = document.getElementById('step-3-display');
+const step3Nav = document.querySelector('.step-3__nav');
+const generateCsvBtn = document.getElementById('generate-csv-btn');
 
 startBtn.addEventListener('click', () => {
   activeStep = 2;
   step1.classList = "hidden";
   step2.classList = "";
+});
+
+generateCsvBtn.addEventListener('click', () => {
+  if (!csvRows.length) {
+    alert('No data');
+    return;
+  }
+
+  // show summary popup
+  // console.log(sumGains(currencyGains['ADA']));
+  // console.log(sumGains(currencyGains['ETH']));
+  // console.log(sumGains(currencyGains['BTC']));
+
+  generateCsv();
 });
 
 const absVal = val => val < 0 ? -1 * val : val;
@@ -24,20 +44,31 @@ const roundCost = val => typeof val === 'number' ? parseFloat(val.toFixed(6)) : 
 
 // data is array of arrays: Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds
 // https://stackoverflow.com/a/14966131/2710227
-const generateCsv = (data) => {
+const generateCsv = () => {
   let csvContent = "data:text/csv;charset=utf-8,";
 
-  data.forEach(csvRow => {
-    let row = csvRow.join(",");
-    csvContent += row + "\r\n";
+  csvContent += `Currency Name, Purchase Date, Cost Basis, Date Sold, Proceeds` + "\r\n";
+
+  Object.keys(csvData).forEach(currency => {
+    Object.keys(csvData[currency]).forEach(saleDate => {
+      let row = `${currency}, ${csvData[currency][saleDate].buyDate}, ${csvData[currency][saleDate].costBasis}, ${saleDate}, ${csvData[currency][saleDate].proceeds}`;
+      csvContent += row + "\r\n";
+    });
   });
 
-  var encodedUri = encodeURI(csvContent);
-  window.open(encodedUri);
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.style.display = "none";
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", 'cbp-fills-to-turbotax.csv');
+  document.body.appendChild(link); // Required for FF
+  link.click();
 }
 
-const sortBuySellRowsCombineDate = (csvRows) => {
+const sortBuySellRowsCombineDate = () => {
   csvRows.forEach(csvRow => {
+    if (!csvRow) return;
+
     const csvRowCols = csvRow.split(',');
     const currency = csvRowCols[6]; // size unit
     const activeDate = csvRowCols[4].split("T")[0];
@@ -66,12 +97,12 @@ const sortBuySellRowsCombineDate = (csvRows) => {
 }
 
 const renderBuySellRows = (sortedBuySellRows) => {
-  step3.innerHTML = "";
-  step3.classList = "flex-grow";
+  step3Disp.innerHTML = "";
+  step3Disp.classList = "flex-grow";
 
   const currencyBalance = {};
 
-  step3.innerHTML = Object.keys(sortedBuySellRows).map(currency => {
+  step3Disp.innerHTML = Object.keys(sortedBuySellRows).map(currency => {
     currencyBalance[currency] = 0;
     const renderedSaleDates = {};
 
@@ -116,6 +147,8 @@ const renderBuySellRows = (sortedBuySellRows) => {
       }).join("")}
     </div>`
   }).join("");
+
+  step3Nav.classList = "step-3__nav";
 }
 
 const getTotalSize = (arrayOfSizes) => (
@@ -154,6 +187,17 @@ const getSellMatch = (currency, saleSize, saleDate) => {
       const nextBuySize = roundSize(getTotalSize(sellMatch) + oldestBuySize);
 
       if (nextBuySize <= saleSize) {
+        if (!(currency in csvData)) {
+          csvData[currency] = {};
+          csvData[currency][saleDate] = {
+            buyDate: firstBuyRowDate
+          };
+        } else if (!(saleDate in csvData[currency])) {
+          csvData[currency][saleDate] = {
+            buyDate: firstBuyRowDate
+          };
+        }
+
         sellMatch.push([oldestBuySize, oldestBuyCost]);
         groupedBuySellRows[currency].buy.shift();
       } else {
@@ -197,7 +241,6 @@ const sumGains = (dateGainObj) => {
 }
 
 const processTransactions = () => {
-  let saleCounter = 0;
   Object.keys(groupedBuySellRows).forEach(currency => {
     groupedBuySellRows[currency].sell.forEach(saleTx => {
       saleCounter += 1;
@@ -213,25 +256,20 @@ const processTransactions = () => {
       }
 
       currencyGains[currency][saleDate] += (roundSize(saleCost + buyBasis[1]));
+      csvData[currency][saleDate] = {
+        ...csvData[currency][saleDate],
+        costBasis: buyBasis[1],
+        proceeds: saleCost,
+      }
     });
   });
-
-  console.log('sales', saleCounter);
-
-  console.log(currencyGains);
-
-  console.log(sumGains(currencyGains['ADA']));
-  console.log(sumGains(currencyGains['ETH']));
-  console.log(sumGains(currencyGains['BTC']));
 }
 
 const processBuySellRows = () => {
-  const sortedBuySellRows = sortBuySellRowsCombineDate(csvRows);
+  const sortedBuySellRows = sortBuySellRowsCombineDate();
   processTransactions();
   renderBuySellRows(sortedBuySellRows);
+  console.log(csvData);
   // generateCsv();
   // renderBuySellRows(sortedBuySellRows);
 }
-
-// for development only
-processBuySellRows();

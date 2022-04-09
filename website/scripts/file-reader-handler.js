@@ -25,7 +25,7 @@ const readFile = () => {
     step2.classList = "hidden";
     step3.classList = "";
 
-    renderBuySellRows();
+    processBuySellRows(); // main.js
   };
 
   // start reading the file. When it is done, calls the onload event defined above.

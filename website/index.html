@@ -22,15 +22,19 @@
     <button type="button" id="start">Start</button>
   </div>
   <div id="step-2" class="hidden">
-    <p>Please note: your CSV's header should match this:</p>
+    <p>Please note: your CSV from CBP fills header columns should match this:</p>
     <span>portfolio,trade id,product,side,created at,size,size unit,price,fee,total,price/fee/total unit</span>
     <img class="example-image" src="./images/example.JPG" width="800" height="auto"/>
     <input type="file" id="file-input">
   </div>
   <div id="step-3" class="hidden">
-    <p>processing...</p>
+    <div id="step-3-display">
+      <p>processing...</p>
+    </div>
+    <div class="step-3__nav hidden">
+      <button type="button" id="generate-csv-btn">Generate Turbotax CSV</button>
+    </div>
   </div>
-  <script src="./scripts/data.js"></script>
   <script src="./scripts/main.js"></script>
   <script src="./scripts/file-reader-handler.js"></script>
 </body>
