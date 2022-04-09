@@ -1,6 +1,6 @@
 ### About
 
-This is a web-based CSV parser to transform an exported `fills.csv` file from CBP to import into Turbotax.
+This is a web-based CSV parser to transform an exported `fills.csv` file from Coinbase Pro for import into Turbotax.
 
 This is using a FIFO method to generate the buy-sell rows. The application is visual in nature so that you can verify the values.
 
