@@ -189,6 +189,7 @@ const getSellMatch = (currency, saleSize, saleDate, saleCounter) => {
     loopCounter += 1;
 
     if (loopCounter > 100) { // looping isn't a bad thing as long as it ends
+      alert('non-ending loop occurred, check dev tools for more info');
       console.log('non-ending loop fail', currency, saleDate, saleSize);
       console.log(sellMatch);
       return;
