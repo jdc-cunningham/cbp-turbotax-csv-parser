@@ -5,7 +5,7 @@ This is a web-based CSV parser to transform an exported `fills.csv` file from CB
 This is using a FIFO method to generate the buy-sell rows. The application is visual in nature so that you can verify the values.
 
 ### Try it
-Click on this link to go to the github hosted site. The code used is this folder.
+Click on this <a href="https://jdc-cunningham.github.io/cbp-turbotax-csv-parser/">link</a> to go to the github hosted site. The code used is the [docs folder](https://github.com/jdc-cunningham/cbp-turbotax-csv-parser/tree/master/docs).
 
 ### Things to consider for accuracy
 * if you have an existing balance from a prior year, that needs to be factored in
