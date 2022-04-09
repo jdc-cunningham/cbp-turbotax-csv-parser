@@ -36,7 +36,16 @@ So at this point I'm going to pretty this thing up, do the full flow as a user.
 
 I've been working with hardcoded data for the time being/not doing the upload.
 
+9:00 PM
+Wtf is this lmao
+<img src="wtf-is-this.JPG" width="500"/>
 
+This was not here a couple days ago, I had an error.
+Anyway I have more than 1000 rows
+
+It does say up to 4000 on some website
+
+Anyway I can't use this because I have deleted the wallets I used to have/associated keys as part of my micro crypto trading stuff.
 
 04/07
 
