@@ -272,7 +272,7 @@ const processTransactions = () => {
       currencyGains[currency][saleDate] += (roundSize(saleCost + buyBasis[1]));
       csvData[currency][saleDate][saleCounter] = {
         ...csvData[currency][saleDate][saleCounter],
-        costBasis: buyBasis[1],
+        costBasis: (-1 * buyBasis[1]),
         proceeds: saleCost,
       }
     });
