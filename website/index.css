@@ -76,10 +76,6 @@ img.example-image {
   margin-bottom: 1rem;
 }
 
-.hidden {
-  display: none;
-}
-
 button#start {
   margin-top: 1rem;
   font-size: 1.5rem;
@@ -92,7 +88,7 @@ button#start {
   justify-content: flex-start;
   flex-direction: column;
   overflow-y: auto;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 106px);
   width: 80vw;
 }
 
@@ -104,7 +100,8 @@ button#start {
   width: 100%;
 }
 
-#generate-csv-btn {
+#generate-csv-btn,
+#hide-summary {
   background-color: #808080;
   color: white;
   border: 0;
@@ -211,4 +208,31 @@ button#start {
 
 .green {
   color: green;
+}
+
+#summary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 2rem;
+  z-index: 1;
+  background-color: white;
+}
+
+#hide-summary {
+  margin-top: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+#summary.hidden {
+  display: none;
 }

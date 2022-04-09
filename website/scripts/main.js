@@ -17,6 +17,9 @@ const step3 = document.getElementById('step-3');
 const step3Disp = document.getElementById('step-3-display');
 const step3Nav = document.querySelector('.step-3__nav');
 const generateCsvBtn = document.getElementById('generate-csv-btn');
+const summary = document.getElementById('summary');
+const summaryDisp = document.getElementById('summary-display');
+const hideSummaryBtn = document.getElementById('hide-summary');
 
 startBtn.addEventListener('click', () => {
   activeStep = 2;
@@ -30,12 +33,11 @@ generateCsvBtn.addEventListener('click', () => {
     return;
   }
 
-  // show summary popup
-  // console.log(sumGains(currencyGains['ADA']));
-  // console.log(sumGains(currencyGains['ETH']));
-  // console.log(sumGains(currencyGains['BTC']));
-
   generateCsv();
+});
+
+hideSummaryBtn.addEventListener('click', () => {
+  summary.classList = "hidden";
 });
 
 const absVal = val => val < 0 ? -1 * val : val;
@@ -51,8 +53,10 @@ const generateCsv = () => {
 
   Object.keys(csvData).forEach(currency => {
     Object.keys(csvData[currency]).forEach(saleDate => {
-      let row = `${currency}, ${csvData[currency][saleDate].buyDate}, ${csvData[currency][saleDate].costBasis}, ${saleDate}, ${csvData[currency][saleDate].proceeds}`;
-      csvContent += row + "\r\n";
+      Object.keys(csvData[currency][saleDate]).forEach(saleCounter => {
+        let row = `${currency}, ${csvData[currency][saleDate][saleCounter].buyDate}, ${csvData[currency][saleDate][saleCounter].costBasis}, ${saleDate}, ${csvData[currency][saleDate][saleCounter].proceeds}`;
+        csvContent += row + "\r\n";
+      });
     });
   });
 
@@ -149,6 +153,14 @@ const renderBuySellRows = (sortedBuySellRows) => {
   }).join("");
 
   step3Nav.classList = "step-3__nav";
+
+  console.log(csvData);
+
+  Object.keys(currencyGains).forEach(currency => {
+    summaryDisp.innerHTML += `<h2>${currency} $${parseFloat(sumGains(currencyGains[currency]).toFixed(2)).toLocaleString()}</h2>`
+  });
+
+  summary.classList = "";
 }
 
 const getTotalSize = (arrayOfSizes) => (
@@ -163,9 +175,17 @@ const getTotalCost = (arrayOfSizes) => (
 // adding buy sizes with proportional fractional cost-basis
 // limited by size and date
 // this also reduces the reference whether by whole rows or partial
-const getSellMatch = (currency, saleSize, saleDate) => {
+const getSellMatch = (currency, saleSize, saleDate, saleCounter) => {
   const sellMatch = [];
   let loopCounter = 0; // set max
+
+  if (!(currency in csvData)) {
+    csvData[currency] = {};
+  }
+
+  if (!(saleDate in csvData[currency])) {
+    csvData[currency][saleDate] = {};
+  }
 
   const addBuy = () => {
     loopCounter += 1;
@@ -179,6 +199,12 @@ const getSellMatch = (currency, saleSize, saleDate) => {
     const firstBuyRow = groupedBuySellRows[currency].buy[0];
     const firstBuyRowDate = firstBuyRow?.split(',')[4].split('T')[0];
 
+    if (!(saleCounter in csvData[currency][saleDate])) {
+      csvData[currency][saleDate][saleCounter] = {
+        buyDate: firstBuyRowDate
+      };
+    }
+
     if ((firstBuyRow && saleDate >= firstBuyRowDate) && (!sellMatch.length || getTotalSize(sellMatch) < saleSize)) {
       const oldestBuy = firstBuyRow;
       const oldestBuyInfo = oldestBuy.split(',');
@@ -187,17 +213,6 @@ const getSellMatch = (currency, saleSize, saleDate) => {
       const nextBuySize = roundSize(getTotalSize(sellMatch) + oldestBuySize);
 
       if (nextBuySize <= saleSize) {
-        if (!(currency in csvData)) {
-          csvData[currency] = {};
-          csvData[currency][saleDate] = {
-            buyDate: firstBuyRowDate
-          };
-        } else if (!(saleDate in csvData[currency])) {
-          csvData[currency][saleDate] = {
-            buyDate: firstBuyRowDate
-          };
-        }
-
         sellMatch.push([oldestBuySize, oldestBuyCost]);
         groupedBuySellRows[currency].buy.shift();
       } else {
@@ -248,16 +263,18 @@ const processTransactions = () => {
       const saleDate = saleTxInfo[4].split('T')[0];
       const saleSize = roundSize(saleTxInfo[5]);
       const saleCost = roundCost(saleTxInfo[9]);
-      const sellMatch = getSellMatch(currency, saleSize, saleDate);
+      const sellMatch = getSellMatch(currency, saleSize, saleDate, saleCounter);
       const buyBasis = getTotalCostBasis(sellMatch);
+
+      console.log(currency, saleDate);
 
       if (!(saleDate in currencyGains[currency])) {
         currencyGains[currency][saleDate] = 0;
       }
 
       currencyGains[currency][saleDate] += (roundSize(saleCost + buyBasis[1]));
-      csvData[currency][saleDate] = {
-        ...csvData[currency][saleDate],
+      csvData[currency][saleDate][saleCounter] = {
+        ...csvData[currency][saleDate][saleCounter],
         costBasis: buyBasis[1],
         proceeds: saleCost,
       }
@@ -269,7 +286,4 @@ const processBuySellRows = () => {
   const sortedBuySellRows = sortBuySellRowsCombineDate();
   processTransactions();
   renderBuySellRows(sortedBuySellRows);
-  console.log(csvData);
-  // generateCsv();
-  // renderBuySellRows(sortedBuySellRows);
 }
