@@ -154,8 +154,6 @@ const renderBuySellRows = (sortedBuySellRows) => {
 
   step3Nav.classList = "step-3__nav";
 
-  console.log(csvData);
-
   Object.keys(currencyGains).forEach(currency => {
     summaryDisp.innerHTML += `<h2>${currency} $${parseFloat(sumGains(currencyGains[currency]).toFixed(2)).toLocaleString()}</h2>`
   });
@@ -265,8 +263,6 @@ const processTransactions = () => {
       const saleCost = roundCost(saleTxInfo[9]);
       const sellMatch = getSellMatch(currency, saleSize, saleDate, saleCounter);
       const buyBasis = getTotalCostBasis(sellMatch);
-
-      console.log(currency, saleDate);
 
       if (!(saleDate in currencyGains[currency])) {
         currencyGains[currency][saleDate] = 0;
